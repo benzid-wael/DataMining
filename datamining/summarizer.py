@@ -9,6 +9,7 @@ import numpy
 
 import os
 import nltk.data
+from nltk.corpus import PlaintextCorpusReader
 
 
 PACKAGE_PATH = os.path.dirname(__file__)
@@ -19,6 +20,14 @@ def get_tokenizer(language):
     subpath = "data/tokenizers/punkt/%s.pickle" % language
     path = os.path.join(PACKAGE_PATH, subpath)
     return nltk.data.load(path)
+
+
+def get_stopwords():
+    """ Returns a corpus of stopwords for several languages. """
+    subpath = "data/corpora/stopwords"
+    path = os.path.join(PACKAGE_PATH, subpath)
+    corpus = PlaintextCorpusReader(path, '.*')
+    return corpus
 
 
 def compute_sentences_score(sentences, important_words):
