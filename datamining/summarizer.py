@@ -7,6 +7,19 @@ A summarizer based on Luhn's algorithm.
 import nltk
 import numpy
 
+import os
+import nltk.data
+
+
+PACKAGE_PATH = os.path.dirname(__file__)
+
+
+def get_tokenizer(language):
+    """ Returns a tokenizer for the given language. """
+    subpath = "data/tokenizers/punkt/%s.pickle" % language
+    path = os.path.join(PACKAGE_PATH, subpath)
+    return nltk.data.load(path)
+
 
 def compute_sentences_score(sentences, important_words):
     """
