@@ -61,4 +61,3 @@ def compute_sentences_score(sentences, important_words):
         scores.append((sentence_idx, score))
 
     return scores
-    
