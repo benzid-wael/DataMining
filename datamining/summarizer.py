@@ -91,3 +91,40 @@ def compute_sentences_score(sentences, important_words, lang):
         scores.append((sentence_idx, score))
 
     return scores
+
+
+def summarize(txt, lang=None, N=None):
+    """ Return a summary of the given text `txt`. """
+    lang = lang or 'english'
+    # number of words to consider important
+    # XXX As this will be used mainly for micro-blogs and blogs it should not be
+    # a big integer
+    N = N or 10
+
+    tokenizer = get_tokenizer(lang)
+    sentences = [s for s in tokenizer.tokenize(txt)]
+
+    normalized_sentences = [s.lower() for s in sentences]
+
+    words = [w for sentence in normalized_sentences for w in
+             tokenizer.tokenize(sentence)]
+
+    # Compute frequency distribution
+    fdist = nltk.FreqDist(words)
+
+    stopwords_corpus = get_stopwords()
+    top_n_words = [w[0] for w in fdist.items()
+                   if w[0] not in stopwords_corpus.words(lang)][:N]
+
+    scored_sentences = compute_sentences_score(normalized_sentences,
+                                               top_n_words, lang)
+
+    # Filter out nonsignificant sentences by using the average score plus a
+    # fraction of the std dev as a filter
+    avg = numpy.mean([s[1] for s in scored_sentences])
+    std = numpy.std([s[1] for s in scored_sentences])
+    threshold = avg + 0.5 * std
+    mean_scored = [(sent_idx, score) for (sent_idx, score) in scored_sentences
+                   if score >= threshold]
+
+    return [sentences[idx] for (idx, score) in mean_scored]
