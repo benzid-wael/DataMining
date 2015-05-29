@@ -6,6 +6,7 @@ A summarizer based on Luhn's algorithm.
 
 import nltk
 import numpy
+import math
 
 import os
 import nltk.data
@@ -128,3 +129,48 @@ def summarize(txt, lang=None, N=None):
                    if score >= threshold]
 
     return [sentences[idx] for (idx, score) in mean_scored]
+
+
+class Summarizer(object):
+
+    def __init__(self, lang=None, max_significat_words=None):
+        self._max_significat_words = max_significat_words or 10
+        self._default_language = lang or 'english'
+        # FIXME We should find a proper way to install all needed data when
+        # installing the package
+
+    def summarize(self, txt):
+        sentences = [s for s in nltk.tokenize.sent_tokenize(txt.strip())]
+
+        normalized_sentences = [s.lower() for s in sentences]
+
+        words = [w for sentence in normalized_sentences for w in
+                 nltk.tokenize.word_tokenize(sentence)]
+
+        # Compute frequency distribution
+        fdist = nltk.FreqDist(words)
+
+        top_n_words = [w[0] for w in fdist.items() if w[0] not
+                       in nltk.corpus.stopwords.words(self._default_language)
+                      ][:self._max_significat_words]
+
+        scored_sentences = compute_sentences_score(normalized_sentences,
+                                                   top_n_words,
+                                                   self._default_language)
+
+        # Filter out nonsignificant sentences by using the average score plus a
+        # fraction of the std dev as a filter
+        avg = numpy.mean([s[1] for s in scored_sentences])
+        std = numpy.std([s[1] for s in scored_sentences])
+        threshold = avg + 0.5 * std
+        mean_scored = [(sent_idx, score) for (sent_idx, score) in scored_sentences
+                       if score >= threshold]
+
+        # XXX this heuristic should be improved
+        if len(mean_scored) < 3:
+            # NOTE At this stage, we should choice another strategy to summarize
+            # the given text.
+            top_sentences = max(3, int(math.sqrt(len(scored_sentences))))
+            return [sentences[idx] for (idx, score) in scored_sentences]
+
+        return [sentences[idx] for (idx, score) in mean_scored]
