@@ -30,7 +30,7 @@ def get_stopwords():
     return corpus
 
 
-def compute_sentences_score(sentences, important_words):
+def compute_sentences_score(sentences, important_words, lang):
     """
     Compute score of the given sentences according to the given important
     words.
