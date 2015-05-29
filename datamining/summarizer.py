@@ -13,6 +13,7 @@ from nltk.corpus import PlaintextCorpusReader
 
 
 PACKAGE_PATH = os.path.dirname(__file__)
+CLUSTER_THRESHOLD = 5  # Distance between words to consider
 
 
 def get_tokenizer(language):
@@ -37,9 +38,12 @@ def compute_sentences_score(sentences, important_words, lang):
     """
     scores = []
     sentence_idx = -1
-    tokenizer = get_tokenizer(lang)
 
-    for s in [tokenizer.tokenize(s) for s in sentences]:
+    # tokenizer = get_tokenizer(lang)
+    # words = [tokenizer.tokenize(s) for s in sentences]
+    words = [nltk.tokenize.word_tokenize(s) for s in sentences]
+
+    for s in words:
         sentence_idx += 1
         word_idx = []
 
