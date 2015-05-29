@@ -46,19 +46,21 @@ def compute_sentences_score(sentences, important_words, lang):
         # For each word in the word list...
         for w in important_words:
             try:
-                # Compute an index for where any important words occur in the sentence.
+                # Compute an index for where any important words occur in the
+                # sentence.
                 word_idx.append(s.index(w))
             except ValueError, e:
                 # w not in this sentence
                 pass
 
         word_idx.sort()
-        # It is possible that some sentences may not contain any important words at all.
+        # It is possible that some sentences may not contain any important words
+        # at all.
         if len(word_idx)== 0:
             continue
 
-        # Using the word index, compute clusters by using a max distance threshold
-        # for any two consecutive words.
+        # Using the word index, compute clusters by using a max distance
+        # threshold for any two consecutive words.
         clusters = []
         cluster = [word_idx[0]]
         i = 1
