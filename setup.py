@@ -2,9 +2,43 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import nltk
 
 from setuptools import setup
+from setuptools.command.install import install
 from setuptools.command.test import test as TestCommand
+
+
+nltk_packages = [
+    "punkt",
+    "stopwords",
+]
+
+requirements = [
+    "nltk==3.0.2",
+    "numpy==1.9.2",
+]
+
+test_requirements = [
+    'pytest==2.7.0',
+]
+
+
+def nltk_downloader(packages):
+    """Download the given NLTK packages."""
+    for package in packages:
+        nltk.download(package)
+
+
+class CustomInstallCommand(install):
+
+    """
+    Customized setuptools install command - install required NLTK data.
+    """
+
+    def run(self):
+        install.run(self)
+        nltk_downloader(nltk_packages)
 
 
 class DataMiningToolsTests(TestCommand):
@@ -26,13 +60,6 @@ class DataMiningToolsTests(TestCommand):
         sys.exit(errno)
 
 
-requirements = [
-]
-
-test_requirements = [
-    'pytest==2.7.0',
-]
-
 setup(
     name='datamining',
     author='Wael BEN ZID',
@@ -45,5 +72,9 @@ setup(
     zip_safe=False,
     test_suite='tests',
     tests_require=test_requirements,
-    cmdclass={'test': DataMiningToolsTests},
+    cmdclass={
+        'install': CustomInstallCommand,
+        'develop': CustomInstallCommand,
+        'test': DataMiningToolsTests
+    },
 )
