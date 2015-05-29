@@ -37,7 +37,9 @@ def compute_sentences_score(sentences, important_words):
     """
     scores = []
     sentence_idx = -1
-    for s in [nltk.tokenize.word_tokenize(s) for s in sentences]:
+    tokenizer = get_tokenizer(lang)
+
+    for s in [tokenizer.tokenize(s) for s in sentences]:
         sentence_idx += 1
         word_idx = []
 
