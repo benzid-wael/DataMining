@@ -170,7 +170,7 @@ class Summarizer(object):
         if len(mean_scored) < 3:
             # NOTE At this stage, we should choice another strategy to summarize
             # the given text.
-            top_sentences = max(3, int(math.sqrt(len(scored_sentences))))
-            return [sentences[idx] for (idx, score) in scored_sentences]
+            top_sentences = max(3, int(math.sqrt(len(scored_sentences)))) + 1
+            return [sentences[idx] for (idx, score) in scored_sentences][:top_sentences]
 
         return [sentences[idx] for (idx, score) in mean_scored]
