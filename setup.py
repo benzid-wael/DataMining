@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
-import nltk
+# import nltk
 
 from setuptools import setup
 from setuptools.command.install import install
@@ -26,6 +26,8 @@ test_requirements = [
 
 def nltk_downloader(packages):
     """Download the given NLTK packages."""
+    import nltk
+
     for package in packages:
         nltk.download(package)
 
