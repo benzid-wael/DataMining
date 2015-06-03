@@ -26,7 +26,13 @@ class TestSummarizer:
 
     def test_short_scientific_text(self):
         txt = """
-        Detecting patterns is a central part of Natural Language Processing. Words ending in -ed tend to be past tense verbs (5.). Frequent use of will is indicative of news text (3). These observable patterns - word structure and word frequency - happen to correlate with particular aspects of meaning, such as tense and topic. But how did we know where to start looking, which aspects of form to associate with which aspects of meaning?"""
+        Detecting patterns is a central part of Natural Language Processing.
+        Words ending in -ed tend to be past tense verbs (5.). Frequent use of
+        will is indicative of news text (3). These observable patterns - word
+        structure and word frequency - happen to correlate with particular
+        aspects of meaning, such as tense and topic. But how did we know where
+        to start looking, which aspects of form to associate with which aspects
+        of meaning?"""
         nbr_sentences = len(txt.split('.'))
         summarizer = Summarizer()
         res = summarizer.summarize(txt)
