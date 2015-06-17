@@ -1,2 +1,4 @@
+beautifulsoup4==4.3.2
 nltk==3.0.2
 numpy==1.9.2
+requests==2.7.0

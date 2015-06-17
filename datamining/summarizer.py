@@ -4,6 +4,8 @@
 A summarizer based on Luhn's algorithm.
 """
 
+__version__ = '0.0.1'
+
 import nltk
 import numpy
 import math
