@@ -142,6 +142,8 @@ class Summarizer(object):
         # installing the package
 
     def summarize(self, txt):
+        # TODO As an enhancement maybe we should force the add of the two
+        # first sentences as they're the most importants one
         sentences = [s for s in nltk.tokenize.sent_tokenize(txt.strip())]
 
         normalized_sentences = [s.lower() for s in sentences]
